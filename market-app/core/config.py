@@ -13,35 +13,40 @@ class ApiPrefix(BaseModel):
 
 
 class DatabaseConfig(BaseModel):
-    db_user: str
-    db_password: str
-    db_host: str
-    db_port: int
-    db_name: str
+    pg_user: str
+    pg_password: str
+    pg_host: str
+    pg_port: int
+    pg_name: str
     echo_sql: bool = False
     echo_pool: bool = False
     pool_size: int = 5
     max_overflow: int = 10
-    
+
     @computed_field
     @property
     def asyncpg_url(self) -> PostgresDsn:
         return MultiHostUrl.build(
             scheme="postgresql+asyncpg",
-            username=self.db_user,
-            password=self.db_password,
-            host=self.db_host,
-            port=self.db_port,
-            path=self.db_name,
+            username=self.pg_user,
+            password=self.pg_password,
+            host=self.pg_host,
+            port=self.pg_port,
+            path=self.pg_name,
         )
-
-    model_config = SettingsConfigDict(env_file=".env", env_ignore_empty=True, case_sensitive=False)
 
 
 class Settings(BaseSettings):
     app_run: AppRunConfig = AppRunConfig()
     api_prefix: ApiPrefix = ApiPrefix()
-    db: DatabaseConfig = DatabaseConfig()
+    db: DatabaseConfig
+
+    model_config = SettingsConfigDict(
+        env_file="market-app/.env",
+        case_sensitive=False,
+        env_nested_delimiter="__",
+        env_prefix="APP__",
+    )
 
 
 settings = Settings()
