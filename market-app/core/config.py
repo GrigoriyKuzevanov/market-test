@@ -42,7 +42,8 @@ class Settings(BaseSettings):
     db: DatabaseConfig
 
     model_config = SettingsConfigDict(
-        env_file=("market-app/.env.template", "market-app/.env"),
+        # env_file=("market-app/.env.template", "market-app/.env"),
+        env_file=(".env.template", ".env"),
         case_sensitive=False,
         env_nested_delimiter="__",
         env_prefix="APP__",
