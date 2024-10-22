@@ -12,6 +12,6 @@ class Product(Base):
     name: Mapped[str] = mapped_column(nullable=False, unique=True)
     price: Mapped[Decimal] = mapped_column(DECIMAL(10, 2), nullable=False)
     category_id: Mapped[int] = mapped_column(
-        ForeignKey("category.id", ondelete="CASCADE"), nullable=False
+        ForeignKey("categories.id", ondelete="CASCADE"), nullable=False
     )
     category: Mapped["Category"] = relationship("Category", back_populates="products")
