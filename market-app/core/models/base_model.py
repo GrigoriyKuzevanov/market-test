@@ -1,8 +1,8 @@
-import datetime
-from datetime import datetime as dt
+from datetime import datetime
 
 from sqlalchemy import DateTime
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.sql.expression import text
 
 
 class Base(DeclarativeBase):
@@ -11,9 +11,9 @@ class Base(DeclarativeBase):
     id: Mapped[int] = mapped_column(
         primary_key=True, nullable=False, autoincrement=True
     )
-    created_at: Mapped[datetime.datetime] = mapped_column(
-        default=dt.now(datetime.timezone.utc)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=text("now()")
     )
-    updated_at: Mapped[datetime.datetime] = mapped_column(
-        onupdate=dt.now(datetime.timezone.utc)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=text("now()"), onupdate=text("now()")
     )
